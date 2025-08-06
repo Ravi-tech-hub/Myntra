@@ -1,19 +1,14 @@
-const BagItem = ({ items }) => {
-  const item = {
-    id: "001",
-    image: "images/1.jpg",
-    company: "Carlton London",
-    item_name: "Rhodium-Plated CZ Floral Studs",
-    original_price: 1045,
-    current_price: 606,
-    discount_percentage: 42,
-    return_period: 14,
-    delivery_date: "10 Oct 2023",
-    rating: {
-      stars: 4.5,
-      count: 1400,
-    },
+import { useDispatch } from "react-redux";
+import { MdDelete } from "react-icons/md";
+import { BagAction } from "../store/BagSlice";
+
+const BagItem = ({ item }) => {
+  const dispatch = useDispatch();
+
+  const handleRemoveItem = () => {
+    dispatch(BagAction.removeFromBag(item.id));
   };
+
   return (
     <div className="bag-item-container">
       <div className="item-left-part">
@@ -39,11 +34,8 @@ const BagItem = ({ items }) => {
         </div>
       </div>
 
-      <div
-        className="remove-from-cart"
-        onClick={() => console.log("Item Removed from cart")}
-      >
-        X
+      <div className="remove-from-cart" onClick={handleRemoveItem}>
+        <MdDelete />
       </div>
     </div>
   );

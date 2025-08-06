@@ -1,25 +1,35 @@
 import "../../src/css/bag.css";
+import { useSelector } from "react-redux";
 const BagSummary = () => {
-  const bagSummary = {
-    totalItem: 3,
-    totalMRP: 2399,
-    totalDiscount: 799,
-    finalPayment: 1600,
-  };
+  let bagItemId = useSelector((store) => store.bag);
+  const items = useSelector((store) => store.items);
+  const finalItem = items.filter((item) => {
+    const itemIndex = bagItemId.indexOf(item.id);
+    return itemIndex >= 0;
+  });
+  let totalItem = items.length;
+  let totalMRP = 0;
+  let totalDiscount = 0;
+  let finalPayment = 0;
+  const Convenience = 99;
+
+  finalItem.forEach((item) => {
+    totalMRP += item.original_price;
+    totalDiscount += item.original_price - item.current_price;
+  });
+  finalPayment = totalMRP - totalDiscount + Convenience;
   return (
     <div className="bag-summary">
       <div className="bag-details-container">
-        <div className="price-header">
-          PRICE DETAILS ({bagSummary.totalItem} Items){" "}
-        </div>
+        <div className="price-header">PRICE DETAI{totalItem} </div>
         <div className="price-item">
           <span className="price-item-tag">Total MRP</span>
-          <span className="price-item-value">₹{bagSummary.totalMRP}</span>
+          <span className="price-item-value">₹{totalMRP}</span>
         </div>
         <div className="price-item">
           <span className="price-item-tag">Discount on MRP</span>
           <span className="price-item-value priceDetail-base-discount">
-            -₹{bagSummary.totalDiscount}
+            -₹{totalDiscount}
           </span>
         </div>
         <div className="price-item">
@@ -29,7 +39,7 @@ const BagSummary = () => {
         <hr />
         <div className="price-footer">
           <span className="price-item-tag">Total Amount</span>
-          <span className="price-item-value">₹{bagSummary.finalPayment}</span>
+          <span className="price-item-value">₹{finalPayment}</span>
         </div>
       </div>
       <button className="btn-place-order">

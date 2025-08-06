@@ -8,6 +8,7 @@ import Bag from "./Routes/Bag.jsx";
 import Home from "./Routes/Home.jsx";
 import { Provider } from "react-redux";
 import store from "./store/index.js";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const router = createBrowserRouter([
   {
